@@ -36,7 +36,6 @@ const keyEl = document.getElementById("key");
 const copyBtn = document.getElementById("copyBtn");
 const countdownEl = document.getElementById("countdown");
 
-// Função de key igual ao segundo HTML
 function randomHex(n) {
   const chars = '0123456789abcdef';
   let str = '';
@@ -62,12 +61,11 @@ function gerarKey() {
   return `LKZh-${part1}-${part2}-${part3}-${part4}`;
 }
 
-// Mostrar a key
 function updateKey() {
   keyEl.textContent = gerarKey();
 }
 
-// Copiar key
+
 copyBtn.onclick = async () => {
   try {
     await navigator.clipboard.writeText(keyEl.textContent);
@@ -78,14 +76,12 @@ copyBtn.onclick = async () => {
   }
 }
 
-// Click direto na div também copia
 keyEl.addEventListener('click', () => {
   navigator.clipboard.writeText(keyEl.textContent).then(() => {
     alert(`Key "${keyEl.textContent}" copiada para a área de transferência!`);
   });
 });
 
-// Função para contador até meia-noite
 function formatTime(ms) {
   if(ms<0) ms=0;
   const s=Math.floor(ms/1000),
@@ -102,12 +98,12 @@ function updateCountdown() {
   countdownEl.textContent = formatTime(midnight - now);
 }
 
-// Atualiza key e contador
+
 updateKey();
 updateCountdown();
 setInterval(() => {
   updateCountdown();
-  updateKey(); // Garante que mude após meia-noite
+  updateKey(); 
 }, 1000);
 </script>
 </body>
