@@ -25,7 +25,7 @@
     <h1>Key:</h1>
     <div class="keybox">
       <div id="key" class="key" aria-live="polite">-- gerando --</div>
-      <button id="copyBtn">Copiar</button>
+      <button id="copyBtn">copy</button>
     </div>
     <div class="meta">
       Reset in: <strong id="countdown">--:--:--</strong> | <strong> reset every 00:00 utc  </strong>
@@ -68,8 +68,8 @@ function updateKey() {
 copyBtn.onclick = async () => {
   try {
     await navigator.clipboard.writeText(keyEl.textContent);
-    copyBtn.textContent = "Copiado!";
-    setTimeout(() => copyBtn.textContent = "Copiar", 1200);
+    copyBtn.textContent = "Copied!";
+    setTimeout(() => copyBtn.textContent = "copy", 1200);
   } catch {
     alert("Falha ao copiar: " + keyEl.textContent);
   }
