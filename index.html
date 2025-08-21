@@ -22,13 +22,13 @@
 <body>
   <div style="text-align">Made by Lucas
   <div class="card">
-    <h1>Sua Key:</h1>
+    <h1>Key:</h1>
     <div class="keybox">
       <div id="key" class="key" aria-live="polite">-- gerando --</div>
       <button id="copyBtn">Copiar</button>
     </div>
     <div class="meta">
-      Reseta em: <strong id="countdown">--:--:--</strong>
+      Reset in: <strong id="countdown">--:--:--</strong> | <strong> reset every 00:00 utc  </strong>
     </div>
   </div>
   <script>
@@ -65,6 +65,49 @@ function updateKey() {
   keyEl.textContent = gerarKey();
 }
 
+
+copyBtn.onclick = async () => {
+  try {
+    await navigator.clipboard.writeText(keyEl.textContent);
+    copyBtn.textContent = "Copiado!";
+    setTimeout(() => copyBtn.textContent = "Copiar", 1200);
+  } catch {
+    alert("Falha ao copiar: " + keyEl.textContent);
+  }
+}
+
+keyEl.addEventListener('click', () => {
+  navigator.clipboard.writeText(keyEl.textContent).then(() => {
+    alert(`Key "${keyEl.textContent}" copiada para a área de transferência!`);
+  });
+});
+
+function formatTime(ms) {
+  if(ms<0) ms=0;
+  const s=Math.floor(ms/1000),
+        h=Math.floor(s/3600),
+        m=Math.floor((s%3600)/60),
+        ss=s%60;
+  return `${h.toString().padStart(2,"0")}:${m.toString().padStart(2,"0")}:${ss.toString().padStart(2,"0")}`;
+}
+
+function updateCountdown() {
+  const now = new Date();
+  const midnight = new Date();
+  midnight.setHours(24,0,0,0);
+  countdownEl.textContent = formatTime(midnight - now);
+}
+
+
+updateKey();
+updateCountdown();
+setInterval(() => {
+  updateCountdown();
+  updateKey(); 
+}, 1000);
+</script>
+</body>
+</html>
 
 copyBtn.onclick = async () => {
   try {
