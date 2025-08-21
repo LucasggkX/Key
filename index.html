@@ -47,7 +47,7 @@ function randomHex(n) {
 
 function gerarKey() {
   const hoje = new Date();
-  const seed = hoje.getDate() + hoje.getMonth() + hoje.getFullYear();
+  const seed = hoje.getUTCDate() + hoje.getUTCMonth() + hoje.getUTCFullYear();
   let s = seed % 2147483647;
   function seededRandom() {
     s = (s * 16807) % 2147483647;
