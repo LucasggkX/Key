@@ -1,107 +1,458 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Key System</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap');
+    
     :root{
-      --bg:#0f1724; --card:#0b1220; --accent:#7c3aed; --muted:#94a3b8; --text:#e6eef8;
+      --bg:#050816; 
+      --card:#0d1425; 
+      --accent:#8b5cf6; 
+      --accent-light:#a78bfa;
+      --muted:#64748b; 
+      --text:#f1f5f9;
+      --glow:#7c3aed;
     }
-    *{box-sizing:border-box;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;}
-    body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#071029 0%, #081427 60%);color:var(--text);padding:24px;}
-    .card{width:100%;max-width:480px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;padding:20px;border:1px solid rgba(255,255,255,0.04);box-shadow:0 10px 30px rgba(2,6,23,0.6);text-align:center}
-    h1{margin:0 0 12px;font-size:22px;}
-    .keybox{display:flex;gap:8px;align-items:center;margin-bottom:14px}
-    .key{flex:1;background:rgba(255,255,255,0.05);padding:14px;border-radius:8px;font-family:monospace;font-size:18px;word-break:break-all;cursor:pointer}
-    button{background:var(--accent);border:0;padding:10px 14px;border-radius:8px;color:white;cursor:pointer;font-weight:600}
-    .meta{margin-top:12px;color:var(--muted);font-size:14px}
-    .meta strong{color:var(--text)}
+    
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+    
+    body{
+      font-family:'Space Grotesk',ui-sans-serif,system-ui,-apple-system;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:#050816;
+      color:var(--text);
+      padding:24px;
+      position:relative;
+      overflow:hidden;
+    }
+    
+    .bg-gradient{
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      z-index:0;
+      opacity:0.4;
+    }
+    
+    .orb{
+      position:absolute;
+      border-radius:50%;
+      filter:blur(80px);
+      animation:float 20s infinite ease-in-out;
+    }
+    
+    .orb1{
+      width:400px;
+      height:400px;
+      background:radial-gradient(circle, rgba(139,92,246,0.5), transparent);
+      top:-200px;
+      left:-200px;
+      animation-delay:0s;
+    }
+    
+    .orb2{
+      width:500px;
+      height:500px;
+      background:radial-gradient(circle, rgba(236,72,153,0.4), transparent);
+      bottom:-250px;
+      right:-250px;
+      animation-delay:5s;
+    }
+    
+    .orb3{
+      width:350px;
+      height:350px;
+      background:radial-gradient(circle, rgba(59,130,246,0.3), transparent);
+      top:50%;
+      left:50%;
+      transform:translate(-50%, -50%);
+      animation-delay:10s;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform:translate(0, 0) scale(1); }
+      25% { transform:translate(50px, 50px) scale(1.1); }
+      50% { transform:translate(-30px, 80px) scale(0.9); }
+      75% { transform:translate(40px, -50px) scale(1.05); }
+    }
+    
+    .container{
+      position:relative;
+      z-index:10;
+      width:100%;
+      max-width:560px;
+    }
+    
+    .header{
+      text-align:center;
+      margin-bottom:32px;
+      animation:fadeInDown 0.8s ease-out;
+    }
+    
+    .header h1{
+      font-size:clamp(28px, 5vw, 42px);
+      font-weight:700;
+      background:linear-gradient(135deg, #a78bfa 0%, #ec4899 100%);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      margin-bottom:8px;
+      letter-spacing:-0.02em;
+    }
+    
+    .header p{
+      color:var(--muted);
+      font-size:15px;
+    }
+    
+    .card{
+      background:rgba(13,20,37,0.8);
+      backdrop-filter:blur(20px);
+      border-radius:24px;
+      padding:40px 32px;
+      border:1px solid rgba(167,139,250,0.1);
+      box-shadow:0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(139,92,246,0.1);
+      position:relative;
+      overflow:hidden;
+      animation:fadeInUp 0.8s ease-out 0.2s backwards;
+    }
+    
+    .card::before{
+      content:'';
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      height:2px;
+      background:linear-gradient(90deg, transparent, var(--accent), transparent);
+      animation:shimmer 3s infinite;
+    }
+    
+    @keyframes shimmer {
+      0%, 100% { opacity:0; transform:translateX(-100%); }
+      50% { opacity:1; transform:translateX(100%); }
+    }
+    
+    .key-label{
+      font-size:13px;
+      text-transform:uppercase;
+      letter-spacing:2px;
+      color:var(--muted);
+      font-weight:600;
+      margin-bottom:12px;
+    }
+    
+    .keybox{
+      display:flex;
+      gap:12px;
+      align-items:stretch;
+      margin-bottom:28px;
+    }
+    
+    .key-wrapper{
+      flex:1;
+      position:relative;
+    }
+    
+    .key{
+      width:100%;
+      background:rgba(139,92,246,0.08);
+      padding:18px 16px;
+      border-radius:14px;
+      font-family:'Courier New', monospace;
+      font-size:18px;
+      font-weight:600;
+      word-break:break-all;
+      cursor:pointer;
+      border:1px solid rgba(167,139,250,0.2);
+      transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position:relative;
+      overflow:hidden;
+    }
+    
+    .key::before{
+      content:'';
+      position:absolute;
+      top:0;
+      left:-100%;
+      width:100%;
+      height:100%;
+      background:linear-gradient(90deg, transparent, rgba(167,139,250,0.2), transparent);
+      transition:left 0.5s;
+    }
+    
+    .key:hover{
+      background:rgba(139,92,246,0.15);
+      border-color:var(--accent);
+      transform:translateY(-2px);
+      box-shadow:0 8px 20px rgba(139,92,246,0.3);
+    }
+    
+    .key:hover::before{
+      left:100%;
+    }
+    
+    .key:active{
+      transform:translateY(0);
+    }
+    
+    button{
+      background:linear-gradient(135deg, var(--accent) 0%, #a78bfa 100%);
+      border:0;
+      padding:18px 24px;
+      border-radius:14px;
+      color:white;
+      cursor:pointer;
+      font-weight:700;
+      font-size:15px;
+      text-transform:uppercase;
+      letter-spacing:1px;
+      transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position:relative;
+      overflow:hidden;
+      box-shadow:0 4px 15px rgba(139,92,246,0.4);
+    }
+    
+    button::before{
+      content:'';
+      position:absolute;
+      top:50%;
+      left:50%;
+      width:0;
+      height:0;
+      border-radius:50%;
+      background:rgba(255,255,255,0.3);
+      transform:translate(-50%, -50%);
+      transition:width 0.6s, height 0.6s;
+    }
+    
+    button:hover{
+      transform:translateY(-2px);
+      box-shadow:0 8px 25px rgba(139,92,246,0.6);
+    }
+    
+    button:active::before{
+      width:300px;
+      height:300px;
+    }
+    
+    .stats{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+      margin-top:28px;
+    }
+    
+    .stat-card{
+      background:rgba(139,92,246,0.05);
+      padding:16px;
+      border-radius:12px;
+      border:1px solid rgba(167,139,250,0.1);
+      transition:all 0.3s;
+    }
+    
+    .stat-card:hover{
+      background:rgba(139,92,246,0.1);
+      transform:translateY(-2px);
+    }
+    
+    .stat-label{
+      font-size:12px;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:1px;
+      margin-bottom:6px;
+    }
+    
+    .stat-value{
+      font-size:24px;
+      font-weight:700;
+      color:var(--accent-light);
+      font-family:'Courier New', monospace;
+    }
+    
+    .footer{
+      text-align:center;
+      margin-top:24px;
+      color:var(--muted);
+      font-size:14px;
+      animation:fadeIn 0.8s ease-out 0.6s backwards;
+    }
+    
+    .footer strong{
+      color:var(--accent-light);
+      font-weight:600;
+    }
+    
+    @keyframes fadeInUp {
+      from { opacity:0; transform:translateY(30px); }
+      to { opacity:1; transform:translateY(0); }
+    }
+    
+    @keyframes fadeInDown {
+      from { opacity:0; transform:translateY(-30px); }
+      to { opacity:1; transform:translateY(0); }
+    }
+    
+    @keyframes fadeIn {
+      from { opacity:0; }
+      to { opacity:1; }
+    }
+    
+    .pulse{
+      animation:pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity:1; }
+      50% { opacity:0.6; }
+    }
+    
+    @media (max-width: 540px) {
+      .card{ padding:28px 20px; }
+      .keybox{ flex-direction:column; }
+      button{ width:100%; }
+      .stats{ grid-template-columns:1fr; }
+    }
   </style>
 </head>
 <body>
-  <div style="text-align">Made by Lucas
-  <div class="card">
-    <h1>Key:</h1>
-    <div class="keybox">
-      <div id="key" class="key" aria-live="polite">-- gerando --</div>
-      <button id="copyBtn">copy</button>
+  <div class="bg-gradient">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+  </div>
+
+  <div class="container">
+    <div class="header">
+      <h1>🔑 Key System</h1>
+      <p>Generate your daily access key</p>
     </div>
-    <div class="meta">
-      Reset in: <strong id="countdown">--:--:--</strong> | <strong> reset every 00:00 utc  </strong>
+
+    <div class="card">
+      <div class="key-label">Your Key Today</div>
+      <div class="keybox">
+        <div class="key-wrapper">
+          <div id="key" class="key" aria-live="polite">-- generating --</div>
+        </div>
+        <button id="copyBtn">Copy</button>
+      </div>
+
+      <div class="stats">
+        <div class="stat-card">
+          <div class="stat-label">Resets in</div>
+          <div class="stat-value" id="countdown">--:--:--</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Next Reset</div>
+          <div class="stat-value pulse">00:00 UTC</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      Made with 💜 by <strong>Lucas</strong>
     </div>
   </div>
- <script>
-const keyEl = document.getElementById("key");
-const copyBtn = document.getElementById("copyBtn");
-const countdownEl = document.getElementById("countdown");
 
-function randomHex(n) {
-  const chars = '0123456789abcdef';
-  let str = '';
-  for (let i = 0; i < n; i++) {
-    str += chars[Math.floor(Math.random() * chars.length)];
-  }
-  return str;
-}
+  <script>
+    const keyEl = document.getElementById("key");
+    const copyBtn = document.getElementById("copyBtn");
+    const countdownEl = document.getElementById("countdown");
 
-function gerarKey() {
-  const hoje = new Date();
-  const seed = hoje.getUTCDate() + hoje.getUTCMonth() + hoje.getUTCFullYear();
-  let s = seed % 2147483647;
-  function seededRandom() {
-    s = (s * 16807) % 2147483647;
-    return (s - 1) / 2147483646;
-  }
-  Math.random = seededRandom;
-  const part1 = randomHex(4);
-  const part2 = randomHex(4);
-  const part3 = randomHex(4);
-  const part4 = randomHex(4);
-  return `LKZh-${part1}-${part2}-${part3}-${part4}`;
-}
+    function randomHex(n) {
+      const chars = '0123456789abcdef';
+      let str = '';
+      for (let i = 0; i < n; i++) {
+        str += chars[Math.floor(Math.random() * chars.length)];
+      }
+      return str;
+    }
 
-function updateKey() {
-  keyEl.textContent = gerarKey();
-}
+    function gerarKey() {
+      const hoje = new Date();
+      const seed = hoje.getUTCDate() + hoje.getUTCMonth() + hoje.getUTCFullYear();
+      let s = seed % 2147483647;
+      function seededRandom() {
+        s = (s * 16807) % 2147483647;
+        return (s - 1) / 2147483646;
+      }
+      Math.random = seededRandom;
+      const part1 = randomHex(4);
+      const part2 = randomHex(4);
+      const part3 = randomHex(4);
+      const part4 = randomHex(4);
+      return `LKZh-${part1}-${part2}-${part3}-${part4}`;
+    }
 
-copyBtn.onclick = async () => {
-  try {
-    await navigator.clipboard.writeText(keyEl.textContent);
-    copyBtn.textContent = "Copied!";
-    setTimeout(() => copyBtn.textContent = "copy", 1200);
-  } catch {
-    alert("Falha ao copiar: " + keyEl.textContent);
-  }
-}
+    function updateKey() {
+      keyEl.textContent = gerarKey();
+    }
 
-keyEl.addEventListener('click', () => {
-  navigator.clipboard.writeText(keyEl.textContent).then(() => {
-    alert(`Key "${keyEl.textContent}" copiada para a área de transferência!`);
-  });
-});
+    copyBtn.onclick = async () => {
+      try {
+        await navigator.clipboard.writeText(keyEl.textContent);
+        const originalText = copyBtn.textContent;
+        copyBtn.textContent = "✓ Copied!";
+        copyBtn.style.background = "linear-gradient(135deg, #10b981 0%, #059669 100%)";
+        setTimeout(() => {
+          copyBtn.textContent = originalText;
+          copyBtn.style.background = "";
+        }, 1500);
+      } catch {
+        alert("Failed to copy: " + keyEl.textContent);
+      }
+    }
 
-function formatTime(ms) {
-  if(ms<0) ms=0;
-  const s=Math.floor(ms/1000),
-        h=Math.floor(s/3600),
-        m=Math.floor((s%3600)/60),
-        ss=s%60;
-  return `${h.toString().padStart(2,"0")}:${m.toString().padStart(2,"0")}:${ss.toString().padStart(2,"0")}`;
-}
+    keyEl.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(keyEl.textContent);
+        keyEl.style.background = "rgba(16,185,129,0.2)";
+        keyEl.style.borderColor = "#10b981";
+        setTimeout(() => {
+          keyEl.style.background = "";
+          keyEl.style.borderColor = "";
+        }, 300);
+      } catch {}
+    });
 
-function updateCountdown() {
-  const now = new Date();
-  const utcMidnight = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 0, 0, 0));
-  countdownEl.textContent = formatTime(utcMidnight - now);
-}
+    function formatTime(ms) {
+      if(ms<0) ms=0;
+      const s=Math.floor(ms/1000),
+            h=Math.floor(s/3600),
+            m=Math.floor((s%3600)/60),
+            ss=s%60;
+      return `${h.toString().padStart(2,"0")}:${m.toString().padStart(2,"0")}:${ss.toString().padStart(2,"0")}`;
+    }
 
-updateKey();
-updateCountdown();
-setInterval(() => {
-  updateCountdown();
-  updateKey(); 
-}, 1000);
-</script>
+    function updateCountdown() {
+      const now = new Date();
+      const utcMidnight = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 0, 0, 0));
+      countdownEl.textContent = formatTime(utcMidnight - now);
+    }
+
+    updateKey();
+    updateCountdown();
+    setInterval(() => {
+      updateCountdown();
+    }, 1000);
+
+    setTimeout(() => {
+      window.close();
+      window.location.href = 'about:blank';
+    }, 300000);
+  </script>
 </body>
 </html>
